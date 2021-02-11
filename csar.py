@@ -1,27 +1,68 @@
+#export HDF5_USE_FILE_LOCKING=FALSE
 from csr import caesar
 import yt
 #import astroconda
 import h5py
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import math
-import numpy
+import numpy as np
+
 
 #objective: mass of each galaxy vs SFR
 # y axis SFR, x axis stellar mass
 infile='/home/s1746414/shp/m100n1024_151.hdf5'
 obj=caesar.load(infile)
 #returns found galaxies and found halos
-fig=plt.figure()
+fig=plt.figure(figsize=(12,10))
 ax=plt.subplot()
 ax.set_title('SFR vs Stellar Mass')
-ax.set_xlabel('Stellar Mass (logged)')
-ax.set_ylabel("$\\mathrm{log}_{10}\\mathrm{M}_{*}$")
-plt.scatter(numpy.log10([i.mass for i in obj.galaxies]),numpy.log10([j.sfr for j in obj.galaxies]))
-plt.savefig("letmecheck.png")
+ax.set_xlabel("$\\mathrm{log_{10}}\\mathrm{M_{\\star}}$")
+ax.set_ylabel("$\\mathrm{log_{10}}\\mathrm{SFR}$")
+#colormap=[cm.plasma(i) for i in np.linspace(0,0.9,len(ax.collections))]
+plt.scatter(np.log10([i.mass for i in obj.galaxies]),np.log10([j.sfr for j in obj.galaxies]))
+"""
+for i,j in enumerate(ax.collections):
+    i.set_color(colormap[j])
+"""
+#text.usetex(True)
+#text.latexpreview(True)
+#ax.linewidth(1.6)
+plt.rcParams['xtick.top']=True
+plt.rcParams['xtick.direction']='in'
+plt.rcParams['xtick.minor.visible']=True
+plt.rcParams['xtick.major.size']=5.4
+plt.rcParams['xtick.minor.size']=3
+plt.rcParams['xtick.major.width']=1.6
+plt.rcParams['xtick.minor.width']=1.2
+plt.rcParams['ytick.right']=True
+plt.rcParams['ytick.direction']='in'
+plt.rcParams['ytick.minor.visible']=True
+plt.rcParams['ytick.major.size']=5.4
+plt.rcParams['ytick.minor.size']=3
+plt.rcParams['ytick.major.width']=1.6
+plt.rcParams['ytick.minor.width']=1.2
+
+#plt.savefig("letmecheck.png")
 plt.show()
 
-id=[i.slist for i in obj.galaxies]
+sid=[i.slist for i in obj.galaxies]
+#print(sid)
+
 hf=h5py.File('snap_m100n1024_151.hdf5','r')
-hf.keys()
-hf.get(obj.galaxies.slist)
+names=list(hf.keys())
+print(names)
+#hf.get([sid.slist for i in obj.galaxies])
+print("#####ok#####")
+def get_dataset_keys(hf):
+    keys = []
+    hf.visit(lambda key : keys.append(key) if type(hf[key]) is h5py._hl.dataset.Dataset else None)
+    return keys
+keys = get_dataset_keys(hf)
+print(keys)
+
 hf.close()
+
+#age, mass, metallicity,
+
+#PartType0/ Masses, Metallicity, ParticleIDs
