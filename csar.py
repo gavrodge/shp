@@ -28,21 +28,46 @@ plt.rcParams['ytick.minor.width']=1.2
 infile='/home/s1746414/shp/m100n1024_151.hdf5'
 obj=caesar.load(infile)
 #returns found galaxies and found halos
-fig=plt.figure(figsize=(12,10))
+
+fig=plt.figure(figsize=(6,5))
 ax=plt.subplot()
-ax.set_title('SFR vs Stellar Mass')
 ax.set_xlabel("$\\mathrm{log_{10}}\\mathrm{(M_{\\star})[M_{\\odot}]}$")
 ax.set_ylabel("$\\mathrm{log_{10}}\\mathrm{(SFR)[M_{\\odot}yr^{-1}]}$")
 
 x=np.log10([i.mass for i in obj.galaxies])
 y=np.log10([j.sfr for j in obj.galaxies])
 
-plt.scatter(x,y,s=0.1,c=np.random.rand(len(x),),cmap='hsv',linewidths=1.6)
+plt.xlim(8.5,11.5)
+plt.ylim(-4,2)
+plt.scatter(x,y,s=0.5,c='black',alpha=0.1)
 
 
-#plt.savefig("letmecheck.png")
+plt.savefig("sfrvm.png",bbox_inches="tight",overwrite=True)
+plt.show()
+"""
+slist = obj.galaxies[0].slist
+print(slist[:5])
+
+hf=h5py.File('snap_m100n1024_151.hdf5','r')
+names=list(hf.keys())
+print(names)
+
+print(hf["PartType4"]["ParticleIDs"].shape, hf["PartType4"]["ParticleIDs"][:5]
+
+mask = np.isin(hf["PartType4"]["ParticleIDs"], slist)
+
+correct_IDs = hf["PartType4"]["ParticleIDs"][mask]
+print(correct_IDs.shape, slist.shape)
+
+formation_times = hf["PartType4"]["StellarFormationTime"][mask]
+
+plt.figure()
+plt.hist(formation_times)
 plt.show()
 
+
+"""
+"""
 sid=[i.slist for i in obj.galaxies]
 #print(sid)
 
@@ -63,3 +88,4 @@ hf.close()
 #age, mass, metallicity,
 
 #PartType0/ Masses, Metallicity, ParticleIDs
+"""
