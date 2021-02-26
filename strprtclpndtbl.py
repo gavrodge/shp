@@ -8,7 +8,7 @@ from astropy.cosmology import FlatLambdaCDM
 cosmo = FlatLambdaCDM(H0=68., Om0=0.3)
 
 # Load up snap file
-snap_file = h5py.File('snap_m100n1024_151.hdf5','r
+snap_file = h5py.File('snap_m100n1024_151.hdf5','r')
 # Extract arrays of star particle information from snap file
 all_star_masses = np.array(snap_file["PartType4"]["Masses"])
 all_star_ids = np.array(snap_file["PartType4"]["ParticleIDs"])
