@@ -9,16 +9,15 @@ cosmo = FlatLambdaCDM(H0=68., Om0=0.3)
 
 # Load up snap file
 snap_file = h5py.File('snap_m100n1024_151.hdf5','r')
-
 # Extract arrays of star particle information from snap file
 all_star_masses = np.array(snap_file["PartType4"]["Masses"])
 all_star_ids = np.array(snap_file["PartType4"]["ParticleIDs"])
 all_star_ages = np.array(snap_file["PartType4"]["StellarFormationTime"])
 
 # Set up pandas dataframe with star particle information
-df = pd.DataFrame(np.c_[all_star_ids, all_star_masses, all_star_ages])
-df.index = all_star_ids
-df.columns = ["ID", "mass", "formation_time"]
+df = pd.DataFrame(data=np.c_[all_star_ids, all_star_masses, all_star_ages],index=all_star_ids,columns=["ID", "mass", "formation_time"])
+#df.index = all_star_ids
+#df.columns = ["ID", "mass", "formation_time"]
 
 # Do unit conversions
 df["formation_redshift"] = (1./np.copy(df["formation_time"].values)) - 1.

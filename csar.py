@@ -39,7 +39,11 @@ y=np.log10([j.sfr for j in obj.galaxies])
 
 plt.xlim(8.5,11.5)
 plt.ylim(-4,2)
+<<<<<<< HEAD
 plt.scatter(x,y,s=0.5,c='black',alpha=0.1)
+=======
+plt.scatter(x,y,s=1,c='black',alpha=0.1)
+>>>>>>> master
 
 
 plt.savefig("sfrvm.png",bbox_inches="tight",overwrite=True)
