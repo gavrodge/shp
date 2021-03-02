@@ -46,6 +46,7 @@ plt.scatter(x,y,s=1,c='black',alpha=0.1)
 
 plt.savefig("sfrvm.png",bbox_inches="tight",overwrite=True)
 plt.show()
+
 """
 slist = obj.galaxies[0].slist
 print(slist[:5])
@@ -66,9 +67,8 @@ formation_times = hf["PartType4"]["StellarFormationTime"][mask]
 plt.figure()
 plt.hist(formation_times)
 plt.show()
-
-
 """
+
 """
 sid=[i.slist for i in obj.galaxies]
 #print(sid)
