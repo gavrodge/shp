@@ -34,7 +34,7 @@ snapdata=Table.read("star_data.fits").to_pandas()
 infile='/home/s1746414/shp/m100n1024_151.hdf5'
 obj=caesar.load(infile) #55609 galaxies
 slist = obj.galaxies[0].slist #first galaxy, most massive
-
+"""
 #plot mass against age
 def mass_v_age(snapdata):
     #plt.scatter(star_masses,star_ftime)
@@ -56,15 +56,6 @@ def mass_v_age(snapdata):
 
 #mass_v_age(data)
 """
-#arange galaxies by mass (already done, whoops)
-def biggest(data):
-    big=None
-    #[i.mass for i in obj.galaxies]
-    for i in 55609:
-        if obj.galaxies[i].masses => big:
-            big=obj.galaxies[i].masses
-    return i
-"""
 #histogram of 100Myr bins, weighted by mass to demonstrate SF
 def histogram(snapdata,obj,slist):
     ida=snapdata["ID"].values #57,825,795 objects
@@ -82,41 +73,41 @@ def histogram(snapdata,obj,slist):
     masser = snapdata["mass"][mask]
 
     hist, bins = np.histogram(formation_times,bins=np.arange(0,13.4,0.1),weights=masser)
-    return hist,bins
+    return bins,hist
 
 #plotting the histogram, SFH
 def histbarplot(hist,bins):
-    plt.bar(bins[:-1], hist)
+    plt.bar(bins[:-1], hist/10**8)
     plt.xlim(min(bins),max(bins))
-    plt.xlabel('Time [Gyr]')
-    plt.ylabel('Star Mass Formed [$10^9\\mathrm{M_{\\odot}}$]')
-    plt.savefig("g1sfh.png",bbox_inches="tight",overwrite=True)
+    plt.xlabel('Time / Gyr')
+    plt.ylabel('Star Formation Rate / $10^9\\mathrm{M_{\\odot}}$')
+    #plt.savefig("g1sfh.png",bbox_inches="tight",overwrite=True)
     plt.show()
 
 #saving SFHs
-def tabulate(snapdata, hist, bins):
-    df=pd.DataFrame(data=np.c_[hist,bins],index=snapdata["ID"],columns=["SF","period"])
+def tabulate(snapdata,arr,obj,bins):
+    df=pd.DataFrame(data=arr,index=bins[:-1],columns=obj.galaxies[:5])#range(5))
     tab = Table.from_pandas(df)
     fits.BinTableHDU(data=tab).writeto("starp_hist.fits", overwrite=True)
 
 
 #for the first 100 most massive galaxies
-blank=[]
-examples=random.sample(range(100),3)#plot 3 random SFH of the 100
-"""
-for i in examples:
-    #e=examples[i]
-    x=obj.galaxies[i].slist
-    a,m=histogram(snapdata,obj,x)
-    histbarplot(a,m)
-""
-for i in range(100)
+array=[]
+for i in range(5):
     slist=obj.galaxies[i].slist
-    hist, bins=histogram(snapdata,obj,slist)
-    #blank.append(hist)
-    if i == examples[:]: histbarplot(hist,bins)
-    else: pass
-#tabulate(snapdata, hist, bins)
-"""
-hist,bins=histogram(snapdata,obj,slist)
-histbarplot(hist,bins)
+    bins,hist=histogram(snapdata,obj,slist)
+    array.append(hist)
+arr=np.array(array).T
+print(arr.shape)
+
+tabulate(snapdata,arr,obj,bins)
+
+examples=[0,42,99]
+#examples=random.sample(range(100),3)#plot 3 random SFH of the 100
+for e in examples:
+    x=obj.galaxies[e].slist
+    a,m=histogram(snapdata,obj,x)
+    histbarplot(m,a)
+
+#bins,hist=histogram(snapdata,obj,slist)
+#histbarplot(hist,bins)
