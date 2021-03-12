@@ -33,7 +33,7 @@ snapdata=Table.read("star_data.fits").to_pandas()
 #load wee file in caesar, create list of star particle IDs in galaxies
 infile='/home/s1746414/shp/m100n1024_151.hdf5'
 obj=caesar.load(infile) #55609 galaxies
-slist = obj.galaxies[0].slist #first galaxy, most massive
+#slist = obj.galaxies[0].slist #first galaxy, most massive
 """
 #plot mass against age
 def mass_v_age(snapdata):
@@ -82,15 +82,15 @@ def histbarplot(bins,hist1,hist2,hist3):
     plt.hist(hist3/10**8, bins=bins[:-1], fill=False,edgecolor=('Red'))
     plt.xlim(min(bins),max(bins))
     plt.xlabel('Time / Gyr')
-    plt.ylabel('Star Formation Rate / $10^9\\mathrm{M_{\\odot}}$')
+    plt.ylabel('Star Formation Rate / $10^17\\mathrm{M_{\\odot}}$')
     plt.savefig("g1sfh.png",bbox_inches="tight",overwrite=True)
     plt.show()
 
 #saving SFHs
 def tabulate(snapdata,arr,obj,bins):
-    df=pd.DataFrame(data=arr,index=bins[:-1],columns=obj.galaxies[:2])#range(5))
-    #tab = Table.from_pandas(df)
-    #fits.BinTableHDU(data=tab).writeto("starp_hist.fits", overwrite=True)
+    df=pd.DataFrame(data=arr,index=bins[:-1], columns=[obj.galaxies[:2]])#[np.arange(2)]
+    tab = Table.from_pandas(df)
+    fits.BinTableHDU(data=tab).writeto("galaxys_sfrs.fits", overwrite=True)
 
 
 #for the first 100 most massive galaxies
@@ -102,6 +102,8 @@ for i in range(2):
 arr=np.array(array).T
 print(arr.shape)
 
+slist = obj.galaxies[0].slist
+bins,hist=histogram(snapdata,obj,slist)
 tabulate(snapdata,arr,obj,bins)
 
 #SFH example plots IDs
