@@ -77,9 +77,9 @@ def histogram(snapdata,obj,slist):
 
 #plotting the histogram, SFH
 def histbarplot(bins,hist1,hist2,hist3):
-    plt.bar(bins[:-1], hist1/10**8,fill=False,edgecolor=('Blue'))
-    plt.bar(bins[:-1], hist2/10**8,fill=False,edgecolor=('Green'))
-    plt.bar(bins[:-1], hist3/10**8,fill=False,edgecolor=('Red'))
+    plt.hist(hist1/10**8, bins=bins[:-1], fill=False,edgecolor=('Blue'))
+    plt.hist(hist2/10**8, bins=bins[:-1], fill=False,edgecolor=('Green'))
+    plt.hist(hist3/10**8, bins=bins[:-1], fill=False,edgecolor=('Red'))
     plt.xlim(min(bins),max(bins))
     plt.xlabel('Time / Gyr')
     plt.ylabel('Star Formation Rate / $10^9\\mathrm{M_{\\odot}}$')
@@ -88,14 +88,14 @@ def histbarplot(bins,hist1,hist2,hist3):
 
 #saving SFHs
 def tabulate(snapdata,arr,obj,bins):
-    df=pd.DataFrame(data=arr,index=bins[:-1],columns=obj.galaxies[:5])#range(5))
+    df=pd.DataFrame(data=arr,index=bins[:-1],columns=obj.galaxies[:2])#range(5))
     #tab = Table.from_pandas(df)
     #fits.BinTableHDU(data=tab).writeto("starp_hist.fits", overwrite=True)
 
 
 #for the first 100 most massive galaxies
 array=[]
-for i in range(5):
+for i in range(2):
     slist=obj.galaxies[i].slist
     bins,hist=histogram(snapdata,obj,slist)
     array.append(hist)
