@@ -31,23 +31,23 @@ obj=caesar.load(infile)
 
 fig=plt.figure(figsize=(6,5))
 ax=plt.subplot()
-ax.set_xlabel("$\\mathrm{log_{10}}\\mathrm{(M_{\\star})[M_{\\odot}]}$")
-ax.set_ylabel("$\\mathrm{log_{10}}\\mathrm{(SFR)[M_{\\odot}yr^{-1}]}$")
+ax.set_xlabel("$\\mathrm{log_{10}\\left(\\frac{M_{\\star}}{M_{\\odot}}\\right)}$")
+ax.set_ylabel("$\\mathrm{log_{10}\\left(\\frac{SFR}{M_{\\odot}yr^{-1}}\\right)}$")
 
 x=np.log10([i.mass for i in obj.galaxies])
 y=np.log10([j.sfr for j in obj.galaxies])
 
 plt.xlim(8.5,11.5)
 plt.ylim(-4,2)
-<<<<<<< HEAD
-plt.scatter(x,y,s=0.5,c='black',alpha=0.1)
-=======
+
+
 plt.scatter(x,y,s=1,c='black',alpha=0.1)
->>>>>>> master
+
 
 
 plt.savefig("sfrvm.png",bbox_inches="tight",overwrite=True)
 plt.show()
+
 """
 slist = obj.galaxies[0].slist
 print(slist[:5])
@@ -68,9 +68,8 @@ formation_times = hf["PartType4"]["StellarFormationTime"][mask]
 plt.figure()
 plt.hist(formation_times)
 plt.show()
-
-
 """
+
 """
 sid=[i.slist for i in obj.galaxies]
 #print(sid)
