@@ -88,7 +88,8 @@ def histbarplot(bins,hist1,hist2,hist3):
 
 #saving SFHs
 def tabulate(snapdata,arr,obj,bins):
-    df=pd.DataFrame(data=arr,index=bins[:-1], columns=[obj.galaxies[:2]])#[np.arange(2)]
+    df=pd.DataFrame(data=arr,index=bins[:-1], columns=np.arange(2).astype(str))#[obj.galaxies[:2]])#
+
     tab = Table.from_pandas(df)
     fits.BinTableHDU(data=tab).writeto("galaxys_sfrs.fits", overwrite=True)
 
