@@ -31,8 +31,8 @@ obj=caesar.load(infile)
 
 fig=plt.figure(figsize=(6,5))
 ax=plt.subplot()
-ax.set_xlabel("$\\mathrm{log_{10}\\left(\\frac{M_{\\star}}{M_{\\odot}}\\right)}$")
-ax.set_ylabel("$\\mathrm{log_{10}\\left(\\frac{SFR}{M_{\\odot}yr^{-1}}\\right)}$")
+ax.set_xlabel("$\\mathrm{log_{10}\\left(M_{\\star}/M_{\\odot}\\right)}$")
+ax.set_ylabel("$\\mathrm{log_{10}\\left(SFR/M_{\\odot}yr^{-1}\\right)}$")
 
 x=np.log10([i.mass for i in obj.galaxies])
 y=np.log10([j.sfr for j in obj.galaxies])
