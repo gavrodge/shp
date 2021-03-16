@@ -4,7 +4,6 @@ from astropy.table import Table
 from astropy.io import fits
 import pandas as pd
 from csr import caesar
-import random
 
 #reparameterise for thicc plots
 plt.rcParams['xtick.top']=True
@@ -76,9 +75,9 @@ def histogram(snapdata,slist):
 
 #plotting the histogram, SFH
 def histbarplot(bins,hist1,hist2,hist3):
-    plt.hist(hist1, bins=bins[:-1], fill=False,edgecolor=('Blue'),histtype='step')
-    plt.hist(hist2, bins=bins[:-1], fill=False,edgecolor=('Green'),histtype='step')
-    plt.hist(hist3, bins=bins[:-1], fill=False,edgecolor=('Red'),histtype='step')
+    plt.hist(hist1, bins=bins[:-1], fill=False,edgecolor=('b'),histtype='step')
+    plt.hist(hist2, bins=bins[:-1], fill=False,edgecolor=('g'),histtype='step')
+    plt.hist(hist3, bins=bins[:-1], fill=False,edgecolor=('r'),histtype='step')
     plt.xlim(min(bins),max(bins))
     plt.xlabel('Time / Gyr')
     plt.ylabel('Star Formation Rate / $10^9\\mathrm{M_{\\odot}}$')
