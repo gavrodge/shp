@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, ShuffleSplit
+
 
 class GPRuning:
 
@@ -8,7 +9,7 @@ class GPRuning:
         self.X = X
         self.galaxies = galaxies
 
-    def parameval(self, model, parameters, splits=5):
+    def parameval(self, model, parameters, splits=5, random_state=1):
         """
         Perform Grid search for each galaxy using any given model and any given parameters for the model.
         Default number of cross validation splits is 5, a common standard for cross validaition.
@@ -16,7 +17,7 @@ class GPRuning:
         Output a dictionary with the performance means and stds splits for each galaxy.
         """
 
-        gscv = GridSearchCV(model, parameters, cv=splits)
+        gscv = GridSearchCV(model, parameters, scoring='r2', cv=ShuffleSplit(n_splits=splits, test_size=1/splits, random_state=random_state))
 
         means = pd.DataFrame()
         stds  = pd.DataFrame()
@@ -68,7 +69,7 @@ class GPRuning:
 
             model.random_state = random_state
 
-            grid_results = self.parameval(model, parameters, splits)
+            grid_results = self.parameval(model, parameters, splits=splits, random_state=random_state)
 
             means = grid_results['means']
             stds = grid_results['stds']
@@ -89,5 +90,5 @@ class GPRuning:
 
 
     def best_set(self, results):
-
+        #the best value of r^2 scaoring is one so return highest value
         return results['means'].idxmax(axis=1)[0]
